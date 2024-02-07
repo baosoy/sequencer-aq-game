@@ -124,7 +124,8 @@ const useStore = create(
         },
         fetchNewReadings: async () => {
           const { environment } = get();
-          const data = await fetch(import.meta.env.AQ_API_URL).then((r) =>
+
+          const data = await fetch(import.meta.env.VITE_AQ_API_URL).then((r) =>
             r.json()
           );
           if (data) {
