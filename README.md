@@ -39,4 +39,4 @@ The data from the response should take the following shape:
 
 The key values are pm2_5, pm10, temperature, and timestamp.
 
-This API endpoint should be added under the environment variable `AQ_API_URL=`
+This API endpoint should be added under the environment variable `VITE_AQ_API_URL=`
