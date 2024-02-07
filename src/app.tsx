@@ -20,7 +20,7 @@ export function App() {
 
   useEffect(() => {
     const interval = setInterval(ticker, 250);
-    const environmentFetcher = setInterval(fetchNewReadings, 1000 * 2);
+    const environmentFetcher = setInterval(fetchNewReadings, 1000 * 60 * 2);
     fetchNewReadings();
     return () => {
       clearInterval(interval);
@@ -67,13 +67,6 @@ export function App() {
           <span>Made by Kerim Hudson</span>
         </footer>
       </div>
-      {import.meta.env.PROD ? (
-        <script
-          src="https://cdn.usefathom.com/script.js"
-          data-site={import.meta.env.FATHOM_ANALYTICS_ID}
-          defer
-        ></script>
-      ) : null}
     </>
   );
 }
