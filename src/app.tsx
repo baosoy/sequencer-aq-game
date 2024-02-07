@@ -29,42 +29,51 @@ export function App() {
   }, []);
 
   return (
-    <div class="min-h-screen flex flex-col">
-      <div class="flex-1">
-        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          <Header />
-          <div id="col-1" className="flex flex-col gap-4">
-            <OverviewCard />
+    <>
+      <div class="min-h-screen flex flex-col">
+        <div class="flex-1">
+          <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+            <Header />
+            <div id="col-1" className="flex flex-col gap-4">
+              <OverviewCard />
 
-            {total > 10 ? <SalesCard /> : null}
-            {total > 50 ? <RawDataCard /> : null}
-          </div>
-          <div id="col-2" className="flex flex-col gap-4">
-            {total > 100 ? <AutosequencerCard /> : null}
-            {total > 500 ? <AutopurchaserCard /> : null}
-            {total > 100 ? (
-              <div class="lg:hidden">
-                <EnvironmentCard />
-              </div>
-            ) : null}
-            {total > 100 ? (
-              <div class="lg:hidden">
-                <EnvironmentImpactCard />
-              </div>
-            ) : null}
-          </div>
-          <div id="col-3" className="flex-col gap-4 hidden lg:flex">
-            {total > 200 ? <EnvironmentCard /> : null}
-            {total > 200 ? <EnvironmentImpactCard /> : null}
+              {total > 10 ? <SalesCard /> : null}
+              {total > 50 ? <RawDataCard /> : null}
+            </div>
+            <div id="col-2" className="flex flex-col gap-4">
+              {total > 100 ? <AutosequencerCard /> : null}
+              {total > 500 ? <AutopurchaserCard /> : null}
+              {total > 100 ? (
+                <div class="lg:hidden">
+                  <EnvironmentCard />
+                </div>
+              ) : null}
+              {total > 100 ? (
+                <div class="lg:hidden">
+                  <EnvironmentImpactCard />
+                </div>
+              ) : null}
+            </div>
+            <div id="col-3" className="flex-col gap-4 hidden lg:flex">
+              {total > 200 ? <EnvironmentCard /> : null}
+              {total > 200 ? <EnvironmentImpactCard /> : null}
+            </div>
           </div>
         </div>
+        <footer class="border-t container mx-auto text-white py-4 flex justify-between items-center px-4">
+          <button onClick={reset} class="border-gray-500">
+            Reset Game
+          </button>
+          <span>Made by Kerim Hudson</span>
+        </footer>
       </div>
-      <footer class="border-t container mx-auto text-white py-4 flex justify-between items-center px-4">
-        <button onClick={reset} class="border-gray-500">
-          Reset Game
-        </button>
-        <span>Made by Kerim Hudson</span>
-      </footer>
-    </div>
+      {import.meta.env.PROD ? (
+        <script
+          src="https://cdn.usefathom.com/script.js"
+          data-site={import.meta.env.FATHOM_ANALYTICS_ID}
+          defer
+        ></script>
+      ) : null}
+    </>
   );
 }
