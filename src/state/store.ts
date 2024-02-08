@@ -170,7 +170,7 @@ const useStore = create(
             ).then((r) => r.json());
 
             const weather = await fetch(
-              `http://api.openweathermap.org/data/2.5/weather?q=${
+              `https://api.openweathermap.org/data/2.5/weather?q=${
                 environment.city
               }&units=metric&APPID=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
             ).then((r) => r.json());
