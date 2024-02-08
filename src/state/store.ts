@@ -165,8 +165,9 @@ const useStore = create(
           }
 
           if (!environment.local && environment.id && environment.city) {
-            const options = {
+            const options: RequestInit = {
               method: "GET",
+              mode: "no-cors",
               headers: { accept: "application/json" },
             };
             const data = await fetch(
@@ -177,7 +178,8 @@ const useStore = create(
             const weather = await fetch(
               `http://api.openweathermap.org/data/2.5/weather?q=${
                 environment.city
-              }&units=metric&APPID=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
+              }&units=metric&APPID=${import.meta.env.VITE_OPENWEATHER_API_KEY}`,
+              options
             ).then((r) => r.json());
 
             if (data) {
