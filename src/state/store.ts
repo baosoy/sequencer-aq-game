@@ -99,7 +99,12 @@ const useStore = create(
             priceDiff: 0.2,
             demand: 0.4,
           },
-
+          environment: {
+            ...state.environment,
+            local: true,
+            city: null,
+            id: null,
+          },
           autosequencer: {
             ...state.autosequencer,
             productivity: 1,
