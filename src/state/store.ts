@@ -165,22 +165,14 @@ const useStore = create(
           }
 
           if (!environment.local && environment.id && environment.city) {
-            const options: RequestInit = {
-              method: "GET",
-              headers: {
-                "X-API-Key": import.meta.env.VITE_OPENAQ_API_KEY,
-              },
-            };
             const data = await fetch(
-              `https://api.openaq.org/v2/locations/${environment.id}?limit=100&page=1&offset=0&sort=asc`,
-              options
+              `https://api.openaq.org/v2/locations/${environment.id}?limit=1&page=1&offset=0&sort=desc`
             ).then((r) => r.json());
 
             const weather = await fetch(
               `http://api.openweathermap.org/data/2.5/weather?q=${
                 environment.city
-              }&units=metric&APPID=${import.meta.env.VITE_OPENWEATHER_API_KEY}`,
-              options
+              }&units=metric&APPID=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
             ).then((r) => r.json());
 
             if (data) {
@@ -263,7 +255,7 @@ const useStore = create(
             const envScores = sound + pm10 + pm2_5;
 
             const demand =
-              (0.7 / Math.pow(state.sequences.price, 1.3)) * (1.5 - envScores);
+              (0.7 / Math.pow(state.sequences.price, 1.3)) * (1 / envScores);
 
             return {
               sequences: {
