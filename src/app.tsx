@@ -12,19 +12,13 @@ import EnvironmentExplore from "./components/EnvironmentExplore";
 
 export function App() {
   const store = useStore();
-  const {
-    ticker,
-    reset,
-    environment: { fetchNewReadings },
-  } = store;
+  const { ticker, reset } = store;
 
   useEffect(() => {
     const interval = setInterval(ticker, 250);
-    const environmentFetcher = setInterval(fetchNewReadings, 1000 * 60 * 2);
-    fetchNewReadings();
+
     return () => {
       clearInterval(interval);
-      clearInterval(environmentFetcher);
     };
   }, []);
 

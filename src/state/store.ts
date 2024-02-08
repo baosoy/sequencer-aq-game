@@ -167,8 +167,9 @@ const useStore = create(
           if (!environment.local && environment.id && environment.city) {
             const options: RequestInit = {
               method: "GET",
-              mode: "no-cors",
-              headers: { accept: "application/json" },
+              headers: {
+                "X-API-Key": import.meta.env.VITE_OPENAQ_API_KEY,
+              },
             };
             const data = await fetch(
               `https://api.openaq.org/v2/locations/${environment.id}?limit=100&page=1&offset=0&sort=asc`,
