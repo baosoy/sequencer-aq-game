@@ -8,13 +8,13 @@ import AutosequencerCard from "./components/AutosequencerCard";
 import EnvironmentCard from "./components/EnvironmentCard";
 import EnvironmentImpactCard from "./components/EnvironmentImpactCard";
 import AutopurchaserCard from "./components/AutopurchaserCard";
+import EnvironmentExplore from "./components/EnvironmentExplore";
 
 export function App() {
   const store = useStore();
   const {
     ticker,
     reset,
-    sequences: { total },
     environment: { fetchNewReadings },
   } = store;
 
@@ -37,26 +37,23 @@ export function App() {
             <div id="col-1" className="flex flex-col gap-4">
               <OverviewCard />
 
-              {total > 10 ? <SalesCard /> : null}
-              {total > 50 ? <RawDataCard /> : null}
+              <SalesCard />
+              <RawDataCard />
             </div>
             <div id="col-2" className="flex flex-col gap-4">
-              {total > 100 ? <AutosequencerCard /> : null}
-              {total > 500 ? <AutopurchaserCard /> : null}
-              {total > 100 ? (
-                <div class="lg:hidden">
-                  <EnvironmentCard />
-                </div>
-              ) : null}
-              {total > 100 ? (
-                <div class="lg:hidden">
-                  <EnvironmentImpactCard />
-                </div>
-              ) : null}
+              <AutosequencerCard />
+              <AutopurchaserCard />(
+              <div class="lg:hidden">
+                <EnvironmentCard />
+              </div>
+              <div class="lg:hidden">
+                <EnvironmentImpactCard />
+              </div>
             </div>
             <div id="col-3" className="flex-col gap-4 hidden lg:flex">
-              {total > 200 ? <EnvironmentCard /> : null}
-              {total > 200 ? <EnvironmentImpactCard /> : null}
+              <EnvironmentCard />
+              <EnvironmentImpactCard />
+              <EnvironmentExplore />
             </div>
           </div>
         </div>

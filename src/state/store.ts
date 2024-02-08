@@ -7,6 +7,9 @@ interface SequencerStore {
   reset: () => void;
   ticker: () => void;
   environment: {
+    local: boolean;
+    id: null | number;
+    city: null | string;
     values: {
       pm2_5: number;
       pm10: number;
@@ -20,6 +23,11 @@ interface SequencerStore {
       temperature: number;
       sound: number;
     };
+    updateEnvironmentType: (obj: {
+      local: boolean;
+      id: number | null;
+      city: string | null;
+    }) => void;
     fetchNewReadings: () => void;
     calculateImpact: () => void;
     updateValues: (args: {
@@ -109,6 +117,9 @@ const useStore = create(
       ticks: 0,
       funds: 0,
       environment: {
+        local: true,
+        id: null,
+        city: null,
         values: {
           pm10: 0,
           pm2_5: 0,
@@ -122,20 +133,68 @@ const useStore = create(
           temperature: 0,
           sound: 0,
         },
+        updateEnvironmentType: ({ local, id, city }) => {
+          const store = get();
+          set((state) => ({
+            environment: {
+              ...state.environment,
+              local,
+              id,
+              city,
+            },
+          }));
+
+          store.environment.fetchNewReadings();
+        },
         fetchNewReadings: async () => {
           const { environment } = get();
 
-          const data = await fetch(import.meta.env.VITE_AQ_API_URL).then((r) =>
-            r.json()
-          );
-          if (data) {
-            environment.updateValues({
-              pm2_5: data.pm2_5,
-              pm10: data.pm10,
-              sound: data.noise,
-              temperature: data.temperature,
-              timestamp: data.timestamp,
-            });
+          if (environment.local) {
+            const data = await fetch(import.meta.env.VITE_AQ_API_URL).then(
+              (r) => r.json()
+            );
+            if (data) {
+              environment.updateValues({
+                pm2_5: data.pm2_5,
+                pm10: data.pm10,
+                sound: data.noise,
+                temperature: data.temperature,
+                timestamp: data.timestamp,
+              });
+            }
+          }
+
+          if (!environment.local && environment.id && environment.city) {
+            const options = {
+              method: "GET",
+              headers: { accept: "application/json" },
+            };
+            const data = await fetch(
+              `https://api.openaq.org/v2/locations/${environment.id}?limit=100&page=1&offset=0&sort=asc`,
+              options
+            ).then((r) => r.json());
+
+            const weather = await fetch(
+              `http://api.openweathermap.org/data/2.5/weather?q=${
+                environment.city
+              }&units=metric&APPID=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
+            ).then((r) => r.json());
+
+            if (data) {
+              environment.updateValues({
+                pm2_5: data.results[0].parameters.filter(
+                  (i: any) => i.parameter === "pm25"
+                )[0].average,
+                pm10: data.results[0].parameters.filter(
+                  (i: any) => i.parameter === "pm10"
+                )[0].average,
+                sound: 0,
+                temperature: weather?.main?.temp ?? 16,
+                timestamp: data.results[0].parameters.filter(
+                  (i: any) => i.parameter === "pm25"
+                )[0].lastUpdated,
+              });
+            }
           }
         },
         updateValues: (args) => {
