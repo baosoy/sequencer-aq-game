@@ -1,5 +1,13 @@
 import { render } from "preact";
-import { App } from "./app.tsx";
+
 import "./index.css";
 
-render(<App />, document.getElementById("app")!);
+render(
+  <div>
+    <h1>Coming back soon.</h1>
+    <p>
+      In the meantime, <a href="https://kerimhudson.com">come say hello.</a>
+    </p>
+  </div>,
+  document.getElementById("app")!
+);

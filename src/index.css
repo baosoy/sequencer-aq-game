@@ -4,7 +4,11 @@
 
 html,
 body {
-  @apply antialiased bg-black font-mono tracking-tight text-sm;
+  @apply antialiased bg-black text-white p-4 font-mono tracking-tight text-sm;
+}
+
+a {
+  @apply underline italic;
 }
 
 button {
